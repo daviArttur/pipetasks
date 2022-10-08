@@ -6,7 +6,7 @@ type initialState = {
 }
 
 const initialState: initialState = {
-   error: true,
+   error: false,
    message: null,
 }
 
@@ -15,7 +15,6 @@ const errorSlice = createSlice({
    initialState,
    reducers: {
       setError: (state, { payload }: PayloadAction<{ message: string }>) => {
-         console.log(payload)
          state.error = true;
          state.message = payload.message;
       },

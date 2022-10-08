@@ -29,11 +29,10 @@ const userSlice = createSlice({
    initialState,
    reducers: {
       setUser: (state, { payload }: PayloadAction<{ data : IUser } >) => {
-         console.log(payload)
          state.userData = payload.data;
       },
       removeUser: (state) => {
-         state.userData = null;
+         state.userData = initialState.userData;
       },
    }
 })
