@@ -8,18 +8,18 @@ import { Text } from '../../assets/reusableItens';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
+import TasksWeekly from '../../components/TasksWeekly';
 import Task from '../../components/TasksWeekly/Task';
 import { withAuth } from '../../helper/withAuth';
 import { ITask } from '../../interface/task';
 import { getTasks } from '../api/task/getTasks';
 
 type TasksProps = {
-  tasks: { content: ITask[] | false } 
+  tasks: ITask[] | []  
 }
 
 const Tasks = ({ tasks }: TasksProps) => {
 
-  console.log(tasks, "asdasd")
   const theme = useTheme();
   return (
     <>
@@ -47,13 +47,7 @@ const Tasks = ({ tasks }: TasksProps) => {
             width="100%"
             height="100%"
           >
-            <Text variant="texting3" color={theme.colors.tasks.color}>
-              Suas tarefas
-            </Text>
-            {tasks.content && tasks.content.map((task) => (
-              <Task key={task._id} data={task} />
-            ))}
-            {!tasks.content && <h1>Tarefas</h1>}
+            <TasksWeekly tasks={tasks}/>
           </ContainerColumn>
         </ContainerColumn>
       </ContainerRow>
@@ -63,10 +57,13 @@ const Tasks = ({ tasks }: TasksProps) => {
 
 export const getServerSideProps = withAuth( async (ctx: GetServerSidePropsContext) => {
   const { token } = parseCookies(ctx);
-  const tasks = await getTasks(token);
-  return { props: {
-    tasks
-  }}
+  const response = await getTasks(token);
+
+  if (!response.error && response.tasks) {
+    return { props: { tasks: response.tasks }}
+  }
+  
+  return { props: { tasks: [] }}
 })
 
 export default Tasks;
