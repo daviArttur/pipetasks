@@ -14,6 +14,7 @@ export const ContainerColumn = styled.div<ContainerProps>`
   margin: ${(props) => props.margin ?? props.margin};
 
   width: ${(props) => props.width ?? props.width};
+  min-height: ${(props) => props.minHeight ?? props.minHeight};
   max-width: ${(props) => props.mw ?? props.mw};
   height: ${(props) => props.height ?? props.height};
   max-height: ${(props) => props.mh ?? props.mh};

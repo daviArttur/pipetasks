@@ -6,6 +6,7 @@ export interface ContainerProps {
   margin?: string;
 
   width?: string;
+  minHeight?: string;
   mw?: string;
   height?: string;
   mh?: string;
