@@ -1,24 +1,33 @@
-import { ContainerColumn } from '../../assets/containers';
+// Component
 import { Text } from '../../assets/reusableItens';
-import { useThemeContext } from '../../context/themeContext';
+import { ContainerColumn } from '../../assets/containers';
 import Task from './Task';
 
-interface TasksWeeklyProps {}
+// Context
+import { useThemeContext } from '../../context/themeContext';
 
-const TasksWeekly = ({}: TasksWeeklyProps) => {
+// Types
+import type { ITask } from '../../interface/task';
+
+type TasksWeeklyProps = { tasks: ITask[] | [] }
+
+const TasksWeekly = ({ tasks }: TasksWeeklyProps) => {
   const { theme } = useThemeContext();
   return (
     <ContainerColumn
       gap="1rem"
+      minHeight='90vh'
       padding="1rem 0"
       width="100%"
       align="flex-start"
     >
       <Text variant="texting3" color={theme.colors.tasks.color}>
-        Tarefas próximas a vencer
+        Suas tarefas
       </Text>
-      <Task title="Nome da tarefa" />
-      <Task title="Nome da tarefa" />
+
+      { tasks && tasks.map((task) => (
+        <Task key={task._id} data={task} />
+      ))}
     </ContainerColumn>
   );
 };
