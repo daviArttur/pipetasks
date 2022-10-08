@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 // Router
 import Router, { useRouter } from "next/router";
 
@@ -22,7 +22,6 @@ type signInType = {
 }
 
 type AuthContextType = {
-   isAuthenticated: boolean;
    signIn: ({ email, password }: signInType) => Promise<{
       data: IUser;
       error: false;
@@ -42,16 +41,16 @@ type Props = {
 };
 
 const authProvider = ({ children }: Props) => {   
-   const [ isAuthenticated, setIsAuthenticated ] = React.useState<boolean>(false);
    const { token } = parseCookies();
+   const calledUserData = React.useRef(false)
+
    useEffect(() => {
-      if (token) {
+      if (token && !calledUserData.current) {
+         calledUserData.current = true
          const autoLogin = async () => {
-            try {  
+            try {
                const response = await userLogin(token);
-               console.log(response.data)
                if (response.error) throw new Error("Um erro aconteceu");
-               setIsAuthenticated(true)
                store.dispatch(setUser({ data: response.data! })) 
             } catch (err) {
                destroyCookie(null, "token")
@@ -84,7 +83,7 @@ const authProvider = ({ children }: Props) => {
    }
    
    return (
-      <AuthenticationContext.Provider value={{ isAuthenticated, signIn }}>
+      <AuthenticationContext.Provider value={{ signIn }}>
          {children}
       </AuthenticationContext.Provider>
    )
