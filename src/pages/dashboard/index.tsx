@@ -3,9 +3,6 @@ import { ContainerColumn, ContainerRow } from '../../assets/containers';
 // Head Config
 import Head from 'next/head';
 
-// React
-import { useContext } from 'react';
-
 // Components
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
@@ -18,16 +15,20 @@ import { Text } from '../../assets/reusableItens';
 import { DashboardContainer } from './styles';
 import { useThemeContext } from '../../context/themeContext';
 
-// Redux
-import { useSelector } from "react-redux"
-
 // Types
-import type { RootState } from '../../redux/store';
+import type { GetServerSidePropsContext } from 'next';
+import type { ITask } from '../../interface/task';
 
 // HOC
 import { withAuth } from '../../helper/withAuth';
+import { parseCookies } from 'nookies';
+import { getTasks } from '../api/task/getTasks';
 
-const Dashboard = () => {
+type Props = {
+  tasks: ITask[] | []
+};
+
+const Dashboard = ({ tasks }: Props) => {
 
   const { theme } = useThemeContext();
 
@@ -46,7 +47,7 @@ const Dashboard = () => {
         <DashboardContainer width="100%" padding="0 0 0 21.563rem" as="main">
           <Header />
           <ContainerColumn align="center" padding="2rem" gap="1rem">
-            <TasksWeekly />
+            <TasksWeekly tasks={tasks}/>
             <ContainerColumn
               background={theme.colors.tasks.background}
               gap="2rem"
@@ -67,8 +68,15 @@ const Dashboard = () => {
   )
 }
 
-export const getServerSideProps = withAuth( async (ctx) => {
-  return { props: {} }
+export const getServerSideProps = withAuth( async (ctx: GetServerSidePropsContext) => {
+  const { token } = parseCookies(ctx);
+  const response = await getTasks(token);
+
+  if (!response.error && response.tasks) {
+    return { props: { tasks: response.tasks }}
+  }
+  
+  return { props: { tasks: [] }}
 })
 
 export default Dashboard;
