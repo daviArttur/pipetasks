@@ -3,7 +3,8 @@ import { useThemeContext } from '../../context/themeContext';
 
 // Next
 import Head from 'next/head';
-import { NextPage } from 'next';
+import { GetStaticPropsContext, NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 // Componentes
 import Header from '../../components/Header';
@@ -19,8 +20,24 @@ import { ContainerColumn, ContainerRow } from '../../assets/containers';
 // HOC
 import { withAuth } from '../../helper/withAuth';
 
+// Redux
+import { useDispatch } from 'react-redux';
+import { removeUser } from '../../redux/slices/user/userSlice';
+
+// Cookies
+import { destroyCookie } from 'nookies';
+
 const Settings: NextPage = () => {
   const { theme, toggleTheme } = useThemeContext();
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  function handleLogOut() {
+    destroyCookie(null, "token")
+    dispatch(removeUser());
+    router.push("/entrar")
+  };
 
   return (
     <>
@@ -59,7 +76,7 @@ const Settings: NextPage = () => {
                 item="Log out"
                 description="Você será desconectado de todas as sessões ativas e terá que fazer login novamente."
               >
-                <Button variant="removed">Log Out</Button>
+                <Button variant="removed" onClick={handleLogOut}>Log Out</Button>
               </ConfigItem>
               <ConfigItem
                 item="Deletar minha conta"
@@ -93,7 +110,7 @@ const Settings: NextPage = () => {
   );
 };
 
-export const getServerSideProps = withAuth( async (ctx) => {
+export const getServerSideProps = withAuth( async (ctx: GetStaticPropsContext) => {
   return { props: {} }
 })
 
