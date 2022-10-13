@@ -1,9 +1,8 @@
-import { ContainerColumn, ContainerRow } from '../../assets/containers';
-
 // Head Config
 import Head from 'next/head';
 
 // Components
+import { ContainerColumn, ContainerRow } from '../../assets/containers';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -21,8 +20,16 @@ import type { ITask } from '../../interface/task';
 
 // HOC
 import { withAuth } from '../../helper/withAuth';
+
+// Cookies
 import { parseCookies } from 'nookies';
+
+// Api
 import { getTasks } from '../api/task/getTasks';
+
+// Redux
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
 
 type Props = {
   tasks: ITask[] | []
@@ -31,6 +38,7 @@ type Props = {
 const Dashboard = ({ tasks }: Props) => {
 
   const { theme } = useThemeContext();
+  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal)
 
   return (
     <>
@@ -44,7 +52,7 @@ const Dashboard = ({ tasks }: Props) => {
       <ContainerRow background={theme.colors.background}>
         <Sidebar />
         <Footer />
-        <DashboardContainer width="100%" padding="0 0 0 21.563rem" as="main">
+        <DashboardContainer width="100%" padding={!openSidebarState ? "0 0 0 5rem" : "0 0 0 21.563rem"} as="main">
           <Header />
           <ContainerColumn align="center" padding="2rem" gap="1rem">
             <TasksWeekly tasks={tasks}/>

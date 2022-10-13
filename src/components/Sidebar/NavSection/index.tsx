@@ -1,11 +1,22 @@
-import { IoIosArrowDown } from 'react-icons/io';
-import { ContainerColumn, ContainerRow } from '../../../assets/containers';
-import { Text } from '../../../assets/reusableItens';
+// Redux 
+import { useSelector } from 'react-redux';
+
+// Context
 import { useThemeContext } from '../../../context/themeContext';
-import { NavSectionProps } from './interface';
+
+// Components
+import { ContainerColumn, ContainerRow } from '../../../assets/containers';
+import { IoIosArrowDown } from 'react-icons/io';
+import { Text } from '../../../assets/reusableItens';
+
+// Types
+import type { RootState } from '../../../redux/store';
+import type { NavSectionProps } from './interface';
 
 const NavSection = ({ title, children }: NavSectionProps) => {
+
   const { theme } = useThemeContext();
+  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal);
 
   return (
     <ContainerColumn
@@ -22,15 +33,19 @@ const NavSection = ({ title, children }: NavSectionProps) => {
         align="center"
         justify="space-between"
       >
-        <Text
-          transform="uppercase"
-          variant="texting5"
-          color={theme.colors.subtitle}
-        >
-          {title}
-        </Text>
-
-        <IoIosArrowDown fontSize="20px" color="var(--blue)" />
+        { openSidebarState && (
+          <>
+            <Text
+            transform="uppercase"
+            variant="texting5"
+            color={theme.colors.subtitle}
+            >
+              {title}
+            </Text>
+            <IoIosArrowDown fontSize="20px" color="var(--blue)" />
+          </>
+        )}
+        
       </ContainerRow>
       {children}
     </ContainerColumn>

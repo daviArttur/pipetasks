@@ -32,12 +32,13 @@ export const ContainerColumn = styled.div<ContainerProps>`
   border-top: ${(props) => props.borderTop ?? props.borderTop};
   border-right: ${(props) => props.borderRight ?? props.borderRight};
   border-left: ${(props) => props.borderLeft ?? props.borderLeft};
+
+  overflow: ${(props) => props.overflow ?? props.overflow};
 `;
 
 export const ContainerRow = styled.div<ContainerProps>`
   display: flex;
   flex-direction: row;
-
   gap: ${(props) => props.gap ?? props.gap};
 
   align-items: ${(props) => props.align ?? props.align};
