@@ -21,29 +21,45 @@ import { ContainerColumn, ContainerRow } from '../../assets/containers';
 import { withAuth } from '../../helper/withAuth';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '../../redux/slices/user/userSlice';
 
 // Cookies
 import { destroyCookie } from 'nookies';
 
+// Api
+import { deleteAccount } from '../api/user/deleteAccount';
+
+// Components
+import { ErrorModal } from '../../components/ErrorModal/ErrorModal';
+// Types
+import type{ RootState } from '../../redux/store';
+
 const Settings: NextPage = () => {
   const { theme, toggleTheme } = useThemeContext();
+  const { error } = useSelector((state: RootState) => state.error);
+  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal);
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   function handleLogOut() {
     destroyCookie(null, "token")
+    destroyCookie(null, "cacheAuth")
     dispatch(removeUser());
     router.push("/entrar")
   };
+
+  async function handleDeleteAccount() {
+    const { error } = await deleteAccount();
+    if (!error) handleLogOut();
+  }
 
   return (
     <>
       <Head>
         <title>Pipe Tasks - Configurações</title>
       </Head>
+      { error && <ErrorModal /> }
       <ContainerRow
         background={theme.colors.background}
         height="100%"
@@ -53,7 +69,7 @@ const Settings: NextPage = () => {
         <Footer />
         <ContainerColumn
           width="100%"
-          padding="0 0 0 21.563rem"
+          padding={!openSidebarState ? "0 0 0 5rem" : "0 0 0 21.563rem"}
           height="100%"
           as="main"
         >
@@ -82,7 +98,7 @@ const Settings: NextPage = () => {
                 item="Deletar minha conta"
                 description="Essa ação não pode ser desfeita"
               >
-                <Button variant="removed">Deletar minha conta</Button>
+                <Button onClick={handleDeleteAccount} variant="removed">Deletar minha conta</Button>
               </ConfigItem>
             </ConfigSection>
             <ConfigSection title="Minhas configurações">
