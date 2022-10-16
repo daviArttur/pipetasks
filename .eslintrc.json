@@ -6,13 +6,9 @@
     "jest": true
   },
   "extends": [
+    "eslint:recommended",
     "plugin:react/recommended",
-    "airbnb",
-    "plugin@typescript-eslint/recommend",
-    "prettier/@typescript-eslint",
-    "airbnb-base",
-    "prettier/react",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -24,9 +20,54 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": "error",
     "react/prop-types": "off",
     "space-before-function-paren": "off",
-    "indent": ["error", 2]
+    "indent": [
+        "error",
+        2
+    ],
+    "no-extra-boolean-cast": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/button-has-type": ["error", {
+      "button": true,
+      "submit": true,
+      "reset":  true
+    }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "linebreak-style": [
+        "error",
+        "windows"
+    ],
+    "semi": [
+        "error",
+        "always"
+    ],
+    "key-spacing": [
+        "error",
+        {   
+            "beforeColon": false,
+            "afterColon": true
+        }
+    ],
+    "space-before-blocks": [
+        "error",
+        {
+            "functions": "always",
+            "keywords": "always"
+        }
+    ],
+    "keyword-spacing": [
+        "error"
+    ],
+    "array-bracket-spacing": [
+        "error",
+        "always"
+    ],
+    "object-curly-spacing": [
+        "error",
+        "always"
+    ],
+    "prefer-arrow-callback": "error"
   }
 }
