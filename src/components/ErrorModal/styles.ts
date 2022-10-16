@@ -45,6 +45,7 @@ export const Container = styled(ContainerColumn)`
 
 export const FlexController = styled.div`
    align-items: center;
+   box-shadow: 4px 4px 8px var(--gray-800);
    display: flex;
    height: 100%;
    justify-content: center;
