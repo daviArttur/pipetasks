@@ -20,11 +20,9 @@ export const ContainerColumn = styled.div<ContainerProps>`
   max-height: ${(props) => props.mh ?? props.mh};
 
   background: ${(props) => props.background ?? props.background};
-  background-image: ${(props) =>
-    props.backgroundImage ?? props.backgroundImage};
+  background-image: ${(props) => props.backgroundImage ?? props.backgroundImage};
   background-size: ${(props) => props.backgroundSize ?? props.backgroundSize};
-  background-repeat: ${(props) =>
-    props.backgroundRepeat ?? props.backgroundRepeat};
+  background-repeat: ${(props) => props.backgroundRepeat ?? props.backgroundRepeat};
 
   border: ${(props) => props.border ?? props.border};
   border-radius: ${(props) => props.borderRadius ?? props.borderRadius};
@@ -34,6 +32,11 @@ export const ContainerColumn = styled.div<ContainerProps>`
   border-left: ${(props) => props.borderLeft ?? props.borderLeft};
 
   overflow: ${(props) => props.overflow ?? props.overflow};
+  position: ${(props) => props.position ?? props.position};
+  left: ${(props) => props.left ?? props.left};
+  right: ${(props) => props.right ?? props.right};
+  top: ${(props) => props.top ?? props.top};
+  bottom: ${(props) => props.bottom ?? props.bottom};
 `;
 
 export const ContainerRow = styled.div<ContainerProps>`

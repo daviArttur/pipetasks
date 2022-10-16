@@ -24,4 +24,9 @@ export interface ContainerProps {
   borderRadius?: string;
 
   overflow?: string;
+  position?: string;
+  left?: string;
+  right?: string;
+  top?: string;
+  bottom?: string;
 }
