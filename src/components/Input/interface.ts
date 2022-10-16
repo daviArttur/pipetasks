@@ -6,4 +6,7 @@ export interface InputProps {
   placeholder: string;
   error?: FieldError;
   color?: string;
+  onChange?: any;
+  onFocus?: any;
+  value?: any;
 }
