@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^2.9.8",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/cookie": "^0.5.1",
+    "formik": "^2.2.9",
     "next": "12.3.0",
     "nookies": "^2.5.2",
     "react": "18.2.0",
@@ -41,6 +42,6 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.7.1",
-    "typescript": "4.8.3"
+    "typescript": "^4.8.4"
   }
 }
