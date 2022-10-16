@@ -1,18 +1,32 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ContainerColumn, ContainerRow } from '../../assets/containers';
-import { Span, Text } from '../../assets/reusableItens';
+// Assets
 import { IoPersonOutline } from 'react-icons/io5';
-import { Input } from '../../components/Input';
 import { HiOutlineLockClosed, HiOutlineMail } from 'react-icons/hi';
-import { SignUpContainer, SignUpContent, SignUpHero } from './styles';
+
+// Handle Form
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+// Components
+import { Span, Text } from '../../assets/reusableItens';
+import { Input } from '../../components/Input';
+import { ContainerColumn, ContainerRow } from '../../assets/containers';
+
+// Styles
+import { SignUpContainer, SignUpContent, SignUpHero } from './styles';
+
+// Api
+import { cadastryUser } from '../api/user/cadastry';
+
+// Next
+import Head from 'next/head';
+import Link from 'next/link';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 interface FormRegisterInputs {
   name: string;
+  surname: string;
   email: string;
   password: string;
 }
@@ -20,7 +34,8 @@ interface FormRegisterInputs {
 const signUpFormSchema = yup.object().shape({
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
   name: yup.string().required('Nome obrigatório'),
-  password: yup.string().required('Senha obrigatória'),
+  surname: yup.string().required('Sobrenome obrigatório'),
+  password: yup.string().required('Senha obrigatória').min(8, "Senha miníma de 8 caracteres"),
 });
 
 const SignUp: NextPage = (props) => {
@@ -29,11 +44,14 @@ const SignUp: NextPage = (props) => {
   });
 
   const { errors } = formState;
+  const router = useRouter();
+  const handleSignUp: SubmitHandler<FormRegisterInputs> = async (inputValues: FormRegisterInputs) => {
 
-  const handleSignUp: SubmitHandler<FormRegisterInputs> = (
-    data: FormRegisterInputs
-  ) => {
-    console.log(data);
+    const { error } = await cadastryUser(inputValues)
+
+    if (!error) {
+      router.push("/entrar")
+    }
   };
 
   return (
@@ -94,6 +112,40 @@ const SignUp: NextPage = (props) => {
                     padding="0 0 0 4px"
                   >
                     {errors.name.message}
+                  </Text>
+                )}
+              </ContainerColumn>
+              <ContainerColumn gap="5px" align="flex-start">
+                <ContainerRow
+                  width="17.5rem"
+                  padding="0 0 0 4px"
+                  borderBottom={
+                    !!errors.surname
+                      ? 'solid 2px var(--red)'
+                      : 'solid 2px var(--black-800)'
+                  }
+                  align="center"
+                  justify="space-between"
+                >
+                  <Input
+                    type="text"
+                    placeholder="Sobrenome"
+                    {...register('surname')}
+                    error={errors.surname}
+                  />
+                  <IoPersonOutline
+                    color={!!errors.surname ? 'var(--red)' : 'var(--black-800)'}
+                    font-size="1.125rem"
+                  />
+                </ContainerRow>
+                {!!errors.surname && (
+                  <Text
+                    variant="texting8"
+                    color="var(--red)"
+                    align="left"
+                    padding="0 0 0 4px"
+                  >
+                    {errors.surname.message}
                   </Text>
                 )}
               </ContainerColumn>
