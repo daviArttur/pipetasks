@@ -38,16 +38,15 @@ import type{ RootState } from '../../redux/store';
 const Settings: NextPage = () => {
   const { theme, toggleTheme } = useThemeContext();
   const { error } = useSelector((state: RootState) => state.error);
-  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal);
   const dispatch = useDispatch();
   const router = useRouter();
 
   function handleLogOut() {
-    destroyCookie(null, "token")
-    destroyCookie(null, "cacheAuth")
+    destroyCookie(null, "token");
+    destroyCookie(null, "cacheAuth");
     dispatch(removeUser());
-    router.push("/entrar")
-  };
+    router.push("/entrar");
+  }
 
   async function handleDeleteAccount() {
     const { error } = await deleteAccount();
@@ -69,7 +68,6 @@ const Settings: NextPage = () => {
         <Footer />
         <ContainerColumn
           width="100%"
-          padding={!openSidebarState ? "0 0 0 5rem" : "0 0 0 21.563rem"}
           height="100%"
           as="main"
         >
@@ -115,7 +113,7 @@ const Settings: NextPage = () => {
                     <option onClick={toggleTheme}>Light</option>
                     <option onClick={toggleTheme}>Dark</option>
                   </select>
-                  <button onClick={toggleTheme}>{theme.name}</button>
+                  <button type="button" onClick={toggleTheme}>{theme.name}</button>
                 </ContainerRow>
               </ConfigItem>
             </ConfigSection>
@@ -127,7 +125,7 @@ const Settings: NextPage = () => {
 };
 
 export const getServerSideProps = withAuth( async (ctx: GetStaticPropsContext) => {
-  return { props: {} }
-})
+  return { props: {} };
+});
 
 export default Settings;
