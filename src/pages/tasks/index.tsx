@@ -1,26 +1,42 @@
-import { GetServerSidePropsContext, NextPage, NextPageContext } from 'next';
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import { parseCookies } from 'nookies';
+// Context
 import { useTheme } from 'styled-components';
+
+// Cookies
+import { parseCookies } from 'nookies';
+
+// Next
+import Head from 'next/head';
+
+// Redux
+import { useSelector } from 'react-redux';
+
+// Components
 import { ContainerColumn, ContainerRow } from '../../assets/containers';
-import { Text } from '../../assets/reusableItens';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
 import TasksWeekly from '../../components/TasksWeekly';
-import Task from '../../components/TasksWeekly/Task';
+import Sidebar from '../../components/Sidebar';
+
+// Helper
 import { withAuth } from '../../helper/withAuth';
-import { ITask } from '../../interface/task';
+
+// Api
 import { getTasks } from '../api/task/getTasks';
+
+// Types
+import type { GetServerSidePropsContext } from 'next';
+import type { ITask } from '../../interface/task';
+import type { RootState } from '../../redux/store';
+import { CreateTaskForm } from '../../components/Tasks/createTaskForm';
 
 type TasksProps = {
   tasks: ITask[] | []  
 }
 
 const Tasks = ({ tasks }: TasksProps) => {
-
+  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal)
   const theme = useTheme();
+
   return (
     <>
       <Head>
@@ -35,7 +51,7 @@ const Tasks = ({ tasks }: TasksProps) => {
         <Footer />
         <ContainerColumn
           width="100%"
-          padding="0 0 0 21.563rem"
+          padding={!openSidebarState ? "0 0 0 5rem" : "0 0 0 21.563rem"}
           height="100%"
           as="main"
         >
@@ -47,6 +63,7 @@ const Tasks = ({ tasks }: TasksProps) => {
             width="100%"
             height="100%"
           >
+            <CreateTaskForm />
             <TasksWeekly tasks={tasks}/>
           </ContainerColumn>
         </ContainerColumn>

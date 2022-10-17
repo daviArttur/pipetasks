@@ -14,16 +14,17 @@ import { toogleSidebar } from '../../../redux/slices/sidebar/sidebar';
 
 // Types
 import { RootState } from '../../../redux/store';
+import { useState } from 'react';
 
-interface NavHeaderProps {}
-
-const NavHeader = ({}: NavHeaderProps) => {
-
+const NavHeader = () => {
   const dispatch = useDispatch();
   const { theme } = useThemeContext();
-  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal)
+  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal);
+  const [ directionIcon, setDirectionIcon ] = useState<boolean>(false);
+
   const handleSidebar = () => {
-    dispatch(toogleSidebar())
+    setDirectionIcon(!directionIcon);
+    dispatch(toogleSidebar());
   };
 
   return (
@@ -31,20 +32,28 @@ const NavHeader = ({}: NavHeaderProps) => {
       as="header"
       borderBottom="1px solid var(--gray-800)"
       align="center"
-      justify="space-between"
-      padding="0 2rem"
+      justify={ directionIcon ? "center" : "space-between" }
       width="100%"
       height="5.438rem"
+      padding={ directionIcon ? "0" : "0 2rem" }
     >
 
 
-    { openSidebarState && (
-      <Text color={theme.colors.title} variant="texting3">
-        Dashboard
-      </Text>
-    )}
+      { openSidebarState && (
+        <Text color={theme.colors.title} variant="texting3">
+          Dashboard
+        </Text>
+      )}
 
-      <MdMenuOpen onClick={handleSidebar}color="var(--gray-800)" fontSize="1.5rem" cursor="pointer"/>
+      <MdMenuOpen 
+        style={{
+          alignSelf: "center",
+          fontSize: "24px",
+          transform: directionIcon ? 'rotate(180deg)' : 'rotate(0)',
+        }} 
+        onClick={handleSidebar} 
+        color="var(--gray-800)" 
+        cursor="pointer"/>
     </ContainerRow>
   );
 };

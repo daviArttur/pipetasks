@@ -27,10 +27,6 @@ import { parseCookies } from 'nookies';
 // Api
 import { getTasks } from '../api/task/getTasks';
 
-// Redux
-import { RootState } from '../../redux/store';
-import { useSelector } from 'react-redux';
-
 type Props = {
   tasks: ITask[] | []
 };
@@ -38,7 +34,6 @@ type Props = {
 const Dashboard = ({ tasks }: Props) => {
 
   const { theme } = useThemeContext();
-  const openSidebarState = useSelector((state: RootState) => state.sidebar.openModal)
 
   return (
     <>
@@ -52,7 +47,7 @@ const Dashboard = ({ tasks }: Props) => {
       <ContainerRow background={theme.colors.background}>
         <Sidebar />
         <Footer />
-        <DashboardContainer width="100%" padding={!openSidebarState ? "0 0 0 5rem" : "0 0 0 21.563rem"} as="main">
+        <DashboardContainer width="100%" as="main">
           <Header />
           <ContainerColumn align="center" padding="2rem" gap="1rem">
             <TasksWeekly tasks={tasks}/>
@@ -73,18 +68,18 @@ const Dashboard = ({ tasks }: Props) => {
         </DashboardContainer>
       </ContainerRow>
     </>
-  )
-}
+  );
+};
 
 export const getServerSideProps = withAuth( async (ctx: GetServerSidePropsContext) => {
   const { token } = parseCookies(ctx);
   const response = await getTasks(token);
 
   if (!response.error && response.tasks) {
-    return { props: { tasks: response.tasks }}
+    return { props: { tasks: response.tasks } };
   }
   
-  return { props: { tasks: [] }}
-})
+  return { props: { tasks: [] } };
+});
 
 export default Dashboard;
